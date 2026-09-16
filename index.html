@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="BMI Buddy — BMI and body fat estimate calculator with clear health education.">
+<title>BMI Buddy — Know Your Body</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#079b83">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="BMI Buddy">
+<style>
+:root{--bg:#f7fbfa;--card:#fff;--ink:#102a43;--muted:#64748b;--line:#dfe9e6;--teal:#079b83;--teal2:#087f6d;--soft:#e8f7f3;--blue:#2878c8;--amber:#e39a25;--red:#dc4c4c;--shadow:0 16px 45px rgba(16,42,67,.08);--r:22px}
+:root.dark{--bg:#0c171d;--card:#122129;--ink:#edf8f5;--muted:#9db2b0;--line:#29403f;--soft:#173a34}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;transition:background .2s ease,color .2s ease}a{text-decoration:none;color:inherit}.wrap{width:min(1160px,calc(100% - 32px));margin:auto}
+header{height:76px;background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;backdrop-filter:blur(14px)}
+:root.dark header{background:rgba(12,23,29,.88)}
+.nav{height:100%;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px;font-weight:850;font-size:22px;letter-spacing:-.7px}.brand b{color:var(--teal)}.mark{width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#12b39a,#087d70);display:grid;place-items:center;color:white;position:relative;box-shadow:0 8px 20px rgba(7,155,131,.22)}.mark:before{content:'♡';font-size:25px;font-weight:900}.mark:after{content:'+';position:absolute;right:4px;bottom:1px;background:white;color:var(--teal);font-size:12px;width:13px;height:13px;border-radius:50%;display:grid;place-items:center}.tag{font-size:9px;color:var(--muted);font-weight:650;letter-spacing:.1px;margin-top:-4px}.brandbox{display:flex;flex-direction:column}.links{display:flex;gap:27px;color:#506176;font-size:13px;font-weight:700}
+:root.dark .links{color:var(--muted)}
+.links a:hover{color:var(--teal)}.theme{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;width:40px;height:40px;cursor:pointer}
+.hero{padding:68px 0 48px;background:linear-gradient(135deg,#eefaf7 0%,#f7fbfa 55%,#eef5ff 100%)}
+:root.dark .hero{background:linear-gradient(135deg,#0e1c1a 0%,#0c171d 55%,#0c1620 100%)}
+.heroGrid{display:grid;grid-template-columns:1fr 500px;gap:64px;align-items:center}.eyebrow{display:inline-flex;gap:8px;align-items:center;background:#e2f6f1;color:var(--teal2);border:1px solid #c9eee6;padding:7px 11px;border-radius:999px;font-size:11px;font-weight:800}
+:root.dark .eyebrow{background:#123028;border-color:#1c4438;color:#5fd8bf}
+.pulse{width:7px;height:7px;background:var(--teal);border-radius:50%}h1{font-size:clamp(40px,5vw,62px);line-height:1.03;letter-spacing:-2.7px;margin:20px 0 16px}.hero p{font-size:17px;color:var(--muted);max-width:610px;margin:0 0 25px}.checks{display:flex;gap:18px;flex-wrap:wrap;color:#496273;font-size:12px;font-weight:700}
+:root.dark .checks{color:var(--muted)}
+.checks span:before{content:'✓';color:var(--teal);margin-right:6px;font-weight:900}
+.calc{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:25px;box-shadow:var(--shadow)}.ctop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:21px}.ctop h2{font-size:21px;margin:0}.ctop small{color:var(--muted)}.switch{display:flex;background:var(--soft);border-radius:10px;padding:3px}.switch button{border:0;background:transparent;padding:7px 11px;border-radius:8px;font-size:11px;font-weight:800;color:var(--muted);cursor:pointer}.switch .active{background:var(--card);color:var(--teal);box-shadow:0 2px 7px #0000000d}.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:15px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.input{position:relative}.input input{width:100%;height:48px;border:1px solid var(--line);border-radius:11px;padding:0 48px 0 13px;outline:none;color:var(--ink);background:var(--card)}.input input:focus{border-color:var(--teal);box-shadow:0 0 0 3px #079b8318}.unit{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);font-weight:800}.gender{display:flex;gap:8px}.gender button{flex:1;height:48px;border:1px solid var(--line);border-radius:11px;background:var(--card);color:var(--muted);font-weight:800;cursor:pointer}.gender button.active{background:var(--teal);border-color:var(--teal);color:white}.mainbtn{width:100%;height:51px;border:0;border-radius:12px;background:var(--teal);color:#fff;font-weight:850;cursor:pointer;font-size:14px}.mainbtn:hover{background:var(--teal2)}.error{color:var(--red);font-size:12px;margin-top:8px;display:none}
+.results{padding:45px 0 25px}.resultGrid{display:grid;grid-template-columns:1.35fr .65fr;gap:16px}.resultCard{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 28px #102a4307;padding:25px}.metricTop{display:grid;grid-template-columns:1fr 250px;gap:20px;align-items:center}.small{font-size:12px;color:var(--muted);font-weight:750}.big{font-size:48px;line-height:1;font-weight:900;letter-spacing:-2px;margin:5px 0}.pill{display:inline-block;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:850;background:var(--soft);color:var(--teal2)}.desc{color:var(--muted);font-size:13px;margin:12px 0 0}
+.gaugeWrap{text-align:center}
+.gaugeWrap svg{width:100%;height:auto;max-width:250px}
+.needleLabel{font-size:22px;font-weight:900;fill:var(--ink)}
+.tickLabel{font-size:9px;font-weight:700;fill:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);margin-top:20px;padding-top:17px}.fact strong{display:block;font-size:13px}.fact span{font-size:10px;color:var(--muted)}.fatTitle{display:flex;justify-content:space-between;align-items:center}.fatNum{font-size:38px;font-weight:900;letter-spacing:-1.5px;margin:12px 0 2px}.fatbar{height:10px;border-radius:99px;background:linear-gradient(90deg,#e6b247,#69c794,#f1c64d,#e76060);position:relative;margin:16px 0 7px}.fatmarker{position:absolute;width:17px;height:17px;border:3px solid var(--ink);background:var(--card);border-radius:50%;top:50%;transform:translate(-50%,-50%);left:50%}.fatNote{font-size:11px;color:var(--muted);margin-top:13px}
+.section{padding:52px 0}.sectionHead{max-width:700px;margin-bottom:24px}.kicker{font-size:11px;color:var(--teal);font-weight:900;letter-spacing:1px;text-transform:uppercase}.section h2{font-size:31px;letter-spacing:-1.2px;margin:5px 0 7px}.sectionHead p{color:var(--muted);margin:0}.catGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.cat{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:18px;padding:20px;min-height:260px}.cat.u{border-top-color:var(--blue)}.cat.h{border-top-color:var(--teal)}.cat.o{border-top-color:var(--amber)}.cat.x{border-top-color:var(--red)}.catIcon{width:42px;height:42px;border-radius:13px;background:var(--soft);display:grid;place-items:center;font-size:20px;margin-bottom:14px}.cat h3{margin:0;font-size:17px}.range{display:inline-block;margin:6px 0 13px;padding:5px 8px;background:var(--soft);border-radius:7px;color:var(--muted);font-size:10px;font-weight:850}.cat p{font-size:12px;color:var(--muted);margin:0 0 11px}.cat strong{font-size:11px}.cat ul{padding-left:17px;margin:6px 0;color:var(--muted);font-size:11px}
+.infoGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.info{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:23px}.info h3{margin:0 0 7px;font-size:18px}.info p{color:var(--muted);font-size:13px;margin:0}.formula{display:flex;align-items:center;justify-content:space-around;margin-top:20px;color:var(--muted);font-size:11px;text-align:center}.formula b{display:block;color:var(--ink);font-size:18px}.formula .eq{font-size:20px;color:var(--teal);font-weight:900}.note{background:var(--soft);border-color:var(--line)}.note strong{color:var(--teal2)}
+.faq{max-width:850px}.faq details{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px 17px;margin-bottom:9px}.faq summary{cursor:pointer;font-weight:800;font-size:13px}.faq p{color:var(--muted);font-size:12px;margin:9px 0 0}
+footer{margin-top:20px;background:#102a43;color:#d8e3eb;padding:30px 0}
+:root.dark footer{background:#081218}
+.foot{display:flex;justify-content:space-between;gap:20px;align-items:center}.foot .brand{color:white}.foot b{color:#52d0b9}
+@media(max-width:900px){.heroGrid{grid-template-columns:1fr;gap:35px}.links{display:none}.catGrid{grid-template-columns:1fr 1fr}.resultGrid{grid-template-columns:1fr}}
+@media(max-width:620px){.wrap{width:calc(100% - 22px)}header{height:68px}.hero{padding:42px 0 35px}h1{font-size:40px}.row,.infoGrid,.catGrid,.metricTop{grid-template-columns:1fr}.calc{padding:19px}.facts{gap:10px}.section{padding:40px 0}.foot{display:block}.foot div+div{margin-top:8px}.brand{font-size:19px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav"><a class="brand" href="#"><span class="mark"></span><span class="brandbox">BMI <b>Buddy</b><span class="tag">Know Your Body · Live Healthier</span></span></a><nav class="links"><a href="#calculator">Calculator</a><a href="#results">Results</a><a href="#categories">BMI Guide</a><a href="#bodyfat">Body Fat</a><a href="#faq">FAQ</a></nav><div style="display:flex;gap:8px;align-items:center"><button class="theme" id="installBtn" aria-label="Install app" style="display:none;width:auto;padding:0 14px;font-size:12px;font-weight:800;color:var(--teal)">Install app</button><button class="theme" id="theme" aria-label="Toggle dark mode">☾</button></div></div></header>
+<main>
+<section class="hero"><div class="wrap heroGrid"><div><span class="eyebrow"><span class="pulse"></span>Your health, made easier to understand</span><h1>Know your BMI. Understand your body.</h1><p>BMI Buddy gives you a quick BMI result, an estimated body-fat percentage, and simple explanations to help you understand what the numbers mean.</p><div class="checks"><span>Instant calculation</span><span>Body-fat estimate</span><span>Clear health education</span></div></div>
+<div class="calc" id="calculator"><div class="ctop"><div><h2>BMI Calculator</h2><small>Enter your details</small></div><div class="switch" role="group" aria-label="Unit system"><button id="unit-metric" class="active">Metric</button><button id="unit-imperial">Imperial</button></div></div>
+
+<div class="field"><label for="age">Age</label><div class="input"><input id="age" type="number" min="2" max="120" placeholder="e.g. 25"><span class="unit">years</span></div></div>
+<div class="field"><label id="genderLabel">Gender</label><div class="gender" role="group" aria-labelledby="genderLabel"><button id="male" class="active" type="button">♂ Male</button><button id="female" type="button">♀ Female</button></div></div>
+
+<div id="metric-fields"><div class="row"><div class="field"><label for="height">Height</label><div class="input"><input id="height" type="number" min="100" max="250" step="0.1" placeholder="e.g. 170"><span class="unit">cm</span></div></div><div class="field"><label for="weight">Weight</label><div class="input"><input id="weight" type="number" min="25" max="300" step="0.1" placeholder="e.g. 65"><span class="unit">kg</span></div></div></div></div>
+
+<div id="imperial-fields" style="display:none"><div class="row"><div class="field"><label for="height-ft">Height</label><div class="input" style="display:flex;gap:8px"><input id="height-ft" type="number" min="3" max="8" placeholder="ft" style="padding:0 10px"><input id="height-in" type="number" min="0" max="11" placeholder="in" style="padding:0 10px"></div></div><div class="field"><label for="weight-lb">Weight</label><div class="input"><input id="weight-lb" type="number" min="55" max="660" step="0.1" placeholder="e.g. 143"><span class="unit">lb</span></div></div></div></div>
+
+<button class="mainbtn" id="go" type="button">Calculate my BMI →</button><div class="error" id="err" role="alert"></div></div></div></section>
+
+<section class="results" id="results" aria-live="polite"><div class="wrap resultGrid"><div class="resultCard"><div class="metricTop"><div><div class="small">YOUR BMI</div><div class="big" id="bmi">—</div><span class="pill" id="pill">Enter your details</span><p class="desc" id="desc">Your BMI result and explanation will appear here.</p></div>
+<div class="gaugeWrap">
+  <svg id="gaugeSvg" viewBox="0 0 300 190"></svg>
+</div>
+</div><div class="facts"><div class="fact"><strong id="catFact">—</strong><span>Category</span></div><div class="fact"><strong id="ideal">—</strong><span>Reference adult range</span></div><div class="fact"><strong id="weightFact">—</strong><span>Your weight</span></div></div></div>
+<div class="resultCard" id="bodyfat"><div class="fatTitle"><div><div class="small">ESTIMATED BODY FAT</div><div class="fatNum" id="fat">—</div></div><span class="pill">Estimate</span></div><div class="fatbar"><span class="fatmarker" id="fatmarker"></span></div><div class="small">Calculated from BMI, age and sex</div><p class="fatNote">This is an estimate, not a direct measurement. Individual results can differ because muscle mass, fat distribution and other factors are not fully captured.</p>
+
+<div id="aiTipsBlock" style="margin-top:20px;padding-top:17px;border-top:1px solid var(--line);display:none">
+  <div class="small" style="margin-bottom:10px">PERSONALIZED TIPS</div>
+  <button class="mainbtn" id="aiTipsBtn" type="button" style="height:44px;font-size:13px">Get health tips for my result</button>
+  <div id="aiTipsOut" style="font-size:13px;color:var(--ink);margin-top:12px;line-height:1.6;white-space:pre-wrap"></div>
+  <p class="fatNote" id="aiTipsNote" style="display:none">General information only — not a medical recommendation. Speak with a healthcare provider for guidance specific to you.</p>
+</div>
+</div></div></section>
+
+<section class="section" id="categories"><div class="wrap"><div class="sectionHead"><div class="kicker">BMI Categories</div><h2>What happens in each BMI range?</h2><p>BMI is a screening measure. The category describes where your height-to-weight ratio falls; it does not diagnose a health condition.</p></div><div class="catGrid">
+<article class="cat u"><div class="catIcon">◌</div><h3>Underweight</h3><span class="range">BMI below 18.5</span><p><strong>What it means:</strong> Weight is below the commonly used adult reference range for your height.</p><strong>What can happen</strong><ul><li>May reflect inadequate energy or nutrient intake.</li><li>Some people may have lower muscle or fat stores.</li><li>Unintentional weight loss deserves attention.</li></ul></article>
+<article class="cat h"><div class="catIcon">♡</div><h3>Healthy Weight</h3><span class="range">BMI 18.5 – 24.9</span><p><strong>What it means:</strong> BMI falls within the commonly used adult reference range.</p><strong>What it can suggest</strong><ul><li>A lower BMI-related risk compared with higher ranges.</li><li>Still does not guarantee good overall health.</li><li>Nutrition, activity and sleep still matter.</li></ul></article>
+<article class="cat o"><div class="catIcon">↗</div><h3>Overweight</h3><span class="range">BMI 25.0 – 29.9</span><p><strong>What it means:</strong> Weight is above the commonly used adult reference range for height.</p><strong>What can happen</strong><ul><li>Health risk can increase as excess body fat increases.</li><li>Risk varies by waist size, activity and other factors.</li><li>Small sustainable changes can be useful.</li></ul></article>
+<article class="cat x"><div class="catIcon">+</div><h3>Obesity</h3><span class="range">BMI 30.0 or above</span><p><strong>What it means:</strong> BMI is in the obesity range used for adults.</p><strong>What can happen</strong><ul><li>Higher average risk for several chronic conditions.</li><li>Risk differs substantially between individuals.</li><li>Professional guidance can help with assessment.</li></ul></article>
+</div></div></section>
+
+<section class="section"><div class="wrap infoGrid"><div class="info"><h3>How is body fat estimated?</h3><p>BMI Buddy uses the <b>Deurenberg adult equation</b> for an estimate based on BMI, age and sex. It is more informative than BMI alone, but it is still not a direct body-composition measurement.</p><div class="formula"><div><b>BMI</b>BMI score</div><span class="eq">+</span><div><b>Age</b>years</div><span class="eq">+</span><div><b>Sex</b>male / female</div><span class="eq">=</span><div><b>Body Fat %</b>estimated</div></div></div><div class="info note"><h3><strong>Important accuracy note</strong></h3><p>For a genuinely more accurate body-fat estimate, a clinician or trained professional can use methods such as skinfold measurements, bioelectrical impedance, or other validated body-composition methods. BMI Buddy's number should be treated as an estimate, not a medical measurement.</p></div></div></section>
+
+<section class="section" id="faq"><div class="wrap"><div class="sectionHead"><div class="kicker">FAQ</div><h2>Common questions</h2></div><div class="faq"><details><summary>Is BMI Buddy's body-fat number accurate?</summary><p>It is an estimate. The formula can provide a useful population-level approximation, but it can be noticeably wrong for an individual, especially when body composition differs from average.</p></details><details><summary>Why do you need gender and age?</summary><p>The adult body-fat equation uses age and sex because body-fat percentage tends to differ across these groups at the same BMI.</p></details><details><summary>Does a healthy BMI mean I am healthy?</summary><p>No. BMI does not measure fitness, blood pressure, blood sugar, body-fat distribution, muscle mass or many other health factors.</p></details><details><summary>Who should not rely on standard adult BMI categories?</summary><p>Children and teenagers need age- and sex-specific interpretation. Pregnancy also requires a different approach. Athletes with high muscle mass can also be misclassified by BMI.</p></details></div></div></section>
+</main><footer><div class="wrap foot"><div class="brand"><span class="mark"></span><span>BMI <b>Buddy</b></span></div><div>Better understanding. Smarter health conversations.</div></div></footer>
+<script>
+(function(){
+  let sex = 1; // 1 = male, 0 = female
+  let unit = 'metric';
+  const $ = id => document.getElementById(id);
+
+  // ---- unit toggle ----
+  $('unit-metric').onclick = () => setUnit('metric');
+  $('unit-imperial').onclick = () => setUnit('imperial');
+  function setUnit(u){
+    unit = u;
+    $('unit-metric').classList.toggle('active', u === 'metric');
+    $('unit-imperial').classList.toggle('active', u === 'imperial');
+    $('metric-fields').style.display = u === 'metric' ? 'block' : 'none';
+    $('imperial-fields').style.display = u === 'imperial' ? 'block' : 'none';
+  }
+
+  // ---- gender toggle ----
+  $('male').onclick = () => { sex = 1; $('male').classList.add('active'); $('female').classList.remove('active'); };
+  $('female').onclick = () => { sex = 0; $('female').classList.add('active'); $('male').classList.remove('active'); };
+
+  // ---- gauge drawing (semicircle) ----
+  const CX = 150, CY = 150, R = 110, BAND_W = 26;
+  function polar(cx, cy, r, t){ // t: 0 (left) .. 180 (right)
+    const angle = (180 - t) * Math.PI / 180;
+    return { x: cx + r * Math.cos(angle), y: cy - r * Math.sin(angle) };
+  }
+  function arcPath(t1, t2, r){
+    const p1 = polar(CX, CY, r, t1);
+    const p2 = polar(CX, CY, r, t2);
+    const large = (t2 - t1) > 180 ? 1 : 0;
+    return `M ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`;
+  }
+  const GMIN = 15, GMAX = 40;
+  function bmiToT(bmi){
+    const c = Math.max(GMIN, Math.min(GMAX, bmi));
+    return ((c - GMIN) / (GMAX - GMIN)) * 180;
+  }
+
+  function buildGauge(){
+    const svg = $('gaugeSvg');
+    const tUnder = bmiToT(18.5), tNorm = bmiToT(25), tOver = bmiToT(30);
+    const bands = [
+      { from: 0, to: tUnder, color: 'var(--blue)' },
+      { from: tUnder, to: tNorm, color: 'var(--teal)' },
+      { from: tNorm, to: tOver, color: 'var(--amber)' },
+      { from: tOver, to: 180, color: 'var(--red)' }
+    ];
+    const ticks = [15, 18.5, 25, 30, 40];
+    let svgContent = '';
+    bands.forEach(b => {
+      svgContent += `<path d="${arcPath(b.from, b.to, R)}" stroke="${b.color}" stroke-width="${BAND_W}" fill="none" />`;
+    });
+    ticks.forEach(v => {
+      const t = bmiToT(v);
+      const p = polar(CX, CY, R + 22, t);
+      svgContent += `<text x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}" text-anchor="middle" class="tickLabel">${v}</text>`;
+    });
+    // needle group (rotated via transform, updated separately)
+    svgContent += `<g id="needleGroup" transform="rotate(0 ${CX} ${CY})">
+      <line x1="${CX}" y1="${CY}" x2="${CX}" y2="${CY - R + BAND_W - 6}" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" />
+      <circle cx="${CX}" cy="${CY}" r="9" fill="var(--ink)" />
+    </g>`;
+    svgContent += `<text id="needleReadout" x="${CX}" y="${CY + 34}" text-anchor="middle" class="needleLabel">BMI = —</text>`;
+    svg.innerHTML = svgContent;
+  }
+  buildGauge();
+
+  function setNeedle(bmi){
+    const t = bmiToT(bmi);
+    const deg = t - 90;
+    const g = $('needleGroup');
+    if (g) g.setAttribute('transform', `rotate(${deg.toFixed(1)} ${CX} ${CY})`);
+    const label = $('needleReadout');
+    if (label) label.textContent = isFinite(bmi) && bmi > 0 ? `BMI = ${bmi.toFixed(1)}` : 'BMI = —';
+  }
+
+  // ---- validation + calculation ----
+  function showError(msg){ $('err').style.display = 'block'; $('err').textContent = msg; }
+  function clearError(){ $('err').style.display = 'none'; $('err').textContent = ''; }
+
+  function readInputs(){
+    const age = +$('age').value;
+    if (!age || age < 2 || age > 120) { showError('Enter an age between 2 and 120.'); return null; }
+
+    let heightCm, weightKg;
+    if (unit === 'metric') {
+      heightCm = +$('height').value;
+      weightKg = +$('weight').value;
+      if (!heightCm || heightCm < 100 || heightCm > 250) { showError('Enter a height between 100 and 250 cm.'); return null; }
+      if (!weightKg || weightKg < 25 || weightKg > 300) { showError('Enter a weight between 25 and 300 kg.'); return null; }
+    } else {
+      const ft = +$('height-ft').value || 0;
+      const inch = +$('height-in').value || 0;
+      const totalIn = ft * 12 + inch;
+      const weightLb = +$('weight-lb').value;
+      if (!totalIn || totalIn < 39 || totalIn > 98) { showError('Enter a height between 3\'3" and 8\'2".'); return null; }
+      if (!weightLb || weightLb < 55 || weightLb > 660) { showError('Enter a weight between 55 and 660 lb.'); return null; }
+      heightCm = totalIn * 2.54;
+      weightKg = weightLb * 0.453592;
+    }
+    clearError();
+    return { age, heightCm, weightKg };
+  }
+
+  function calculate(){
+    const vals = readInputs();
+    if (!vals) return;
+    const { age, heightCm, weightKg } = vals;
+
+    const bmi = weightKg / ((heightCm / 100) ** 2);
+    const cat = bmi < 18.5 ? 'Underweight' : bmi < 25 ? 'Healthy Weight' : bmi < 30 ? 'Overweight' : 'Obesity';
+    const text = bmi < 18.5 ? 'Your BMI is below the commonly used adult reference range.'
+      : bmi < 25 ? 'Your BMI is within the commonly used adult reference range.'
+      : bmi < 30 ? 'Your BMI is above the commonly used adult reference range.'
+      : 'Your BMI is in the obesity range used for adults.';
+
+    let fat = 1.2 * bmi + 0.23 * age - 10.8 * sex - 5.4;
+    fat = Math.max(2, Math.min(60, fat));
+
+    $('bmi').textContent = bmi.toFixed(1);
+    $('pill').textContent = cat;
+    $('desc').textContent = text;
+    $('catFact').textContent = cat;
+    $('weightFact').textContent = unit === 'metric' ? `${weightKg.toFixed(1)} kg` : `${$('weight-lb').value} lb`;
+    $('ideal').textContent = '18.5–24.9';
+    $('fat').textContent = fat.toFixed(1) + '%';
+    $('fatmarker').style.left = Math.max(4, Math.min(96, (fat / 50) * 100)) + '%';
+
+    setNeedle(bmi);
+    lastResult = { bmi, cat, age, sex };
+    $('aiTipsOut').textContent = '';
+    $('aiTipsNote').style.display = 'none';
+    $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  $('go').addEventListener('click', calculate);
+  // live update as the user types, once they've filled in enough to get a number
+  ['age','height','weight','height-ft','height-in','weight-lb'].forEach(id => {
+    $(id).addEventListener('input', () => { if (readInputs()) calculate(); });
+  });
+
+  // ---- AI health tips ----
+  // Two ways this can run:
+  // 1) Inside claude.ai: uses the built-in "sample" capability (no key needed).
+  // 2) Self-hosted (Vercel etc.): calls your own /api/tips endpoint, which
+  //    calls Gemini using a server-side key. See /api/tips.js for setup.
+  let sampleFn = null;
+  let useOwnApi = false;
+  let lastResult = null; // { bmi, cat, age, sex }
+  let tipsController = null;
+
+  (async () => {
+    if (window.claude && typeof window.claude.use === 'function') {
+      try {
+        sampleFn = await window.claude.use('sample');
+      } catch (e) {
+        sampleFn = null;
+      }
+    }
+    if (sampleFn) {
+      $('aiTipsBlock').style.display = 'block';
+    } else {
+      // Not running inside claude.ai — assume the /api/tips endpoint exists
+      // (it will fail gracefully with a clear message if not set up yet).
+      useOwnApi = true;
+      $('aiTipsBlock').style.display = 'block';
+    }
+  })();
+
+  function tipsErrorCopy(code){
+    switch(code){
+      case 'not_granted': return "You'll need to allow this page to use Claude to see personalized tips.";
+      case 'sampling_disabled': return 'AI tips aren\'t available for this account.';
+      case 'rate_limited': return 'Too many requests right now — try again in a moment.';
+      case 'refused': return "Claude couldn't answer that one — try recalculating and asking again.";
+      case 'empty_completion': return 'No response came back — try again.';
+      case 'cancelled': return '';
+      default: return 'Something went wrong getting tips. Try again in a moment.';
+    }
+  }
+
+  $('aiTipsBtn').addEventListener('click', async () => {
+    if ((!sampleFn && !useOwnApi) || !lastResult) return;
+    const btn = $('aiTipsBtn');
+    const out = $('aiTipsOut');
+    const note = $('aiTipsNote');
+    tipsController = new AbortController();
+    btn.disabled = true;
+    out.textContent = 'Thinking...';
+    note.style.display = 'none';
+
+    const { bmi, cat, age, sex } = lastResult;
+
+    if (sampleFn) {
+      // running inside claude.ai
+      const prompt = `A user of a BMI calculator app has these results: BMI ${bmi.toFixed(1)} (category: ${cat}), age ${age}, sex ${sex ? 'male' : 'female'}.
+Write 3-4 short, practical, encouraging general health tips relevant to this category (nutrition, activity, or lifestyle). Keep it general wellness advice, not a medical diagnosis or prescription. Do not repeat the BMI number back. Plain text, one tip per line, no markdown headers.`;
+      try {
+        const { text } = await sampleFn(prompt, {
+          signal: tipsController.signal,
+          modelTier: 'quick',
+          onText: ({ text }) => { out.textContent = text; }
+        });
+        out.textContent = text;
+        note.style.display = 'block';
+      } catch (e) {
+        if (e.code !== 'cancelled') {
+          out.textContent = e.text || '';
+          const msg = tipsErrorCopy(e.code);
+          if (msg) out.textContent = (out.textContent ? out.textContent + '\n\n' : '') + msg;
+        }
+      } finally {
+        btn.disabled = false;
+      }
+      return;
+    }
+
+    // self-hosted: call our own serverless endpoint
+    try {
+      const res = await fetch('/api/tips', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: tipsController.signal,
+        body: JSON.stringify({ bmi, cat, age, sex })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        out.textContent = data.error || 'Could not get tips right now.';
+      } else {
+        out.textContent = data.text;
+        note.style.display = 'block';
+      }
+    } catch (e) {
+      if (e.name !== 'AbortError') {
+        out.textContent = 'Could not reach the tips service. Check your connection and try again.';
+      }
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // ---- theme toggle (class-based, keeps entered values) ----
+  $('theme').onclick = () => {
+    const dark = document.documentElement.classList.toggle('dark');
+    $('theme').textContent = dark ? '☀' : '☾';
+    $('theme').setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+
+  // ---- PWA: service worker + install prompt ----
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    $('installBtn').style.display = 'inline-block';
+  });
+  $('installBtn').addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    $('installBtn').style.display = 'none';
+  });
+  window.addEventListener('appinstalled', () => {
+    $('installBtn').style.display = 'none';
+  });
+})();
+</script></body></html>
